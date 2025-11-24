@@ -20,40 +20,24 @@ public class LoginController {
 
     @FXML
     private void onLoginClicked() {
-        String user = usernameField.getText();
-        String pass = passwordField.getText();
+        String username = usernameField.getText();
+        String password = passwordField.getText();
+        errorLabel.setText("");
 
-        if (user == null || user.isBlank() || pass == null || pass.isBlank()) {
-            errorLabel.setText("Please enter username and password");
+        User logged = authService.login(username, password);
+        if (logged == null) {
+            errorLabel.setText("Invalid username or password");
             return;
         }
 
-        try {
-            User logged = authService.login(user, pass);
-            SessionManager.setCurrentUser(logged);
+        SessionManager.setCurrentUser(logged);
 
-            switch (logged.getRole()) {
-                case "ADMIN" -> SceneManager.switchTo("/views/admin-dashboard.fxml",
-                        "Admin Dashboard");
-                case "INSTRUCTOR" -> SceneManager.switchTo("/views/member-dashboard.fxml",
-                        "Instructor Schedule"); // luego tendréis su propia vista
-                case "MEMBER" -> SceneManager.switchTo("/views/member-dashboard.fxml",
-                        "Member Dashboard");
-                default -> {
-                    errorLabel.setText("Unknown role: " + logged.getRole());
-                    SessionManager.clear();
-                }
-            }
+        String role = logged.getRole(); // make sure this is "ADMIN" / "MEMBER" etc.
 
-        } catch (Exception e) {
-            // Aquí AuthServiceImpl puede lanzar excepción si login falla
-            errorLabel.setText(e.getMessage());
+        if ("ADMIN".equalsIgnoreCase(role)) {
+            SceneManager.switchTo("/views/admin-dashboard.fxml", "Admin dashboard");
+        } else {
+            SceneManager.switchTo("/views/member-dashboard.fxml", "Member dashboard");
         }
-    }
-
-    @FXML
-    private void onRegisterClicked() {
-        // más adelante: abrir pantalla de registro si queréis
-        errorLabel.setText("Register not implemented yet");
     }
 }

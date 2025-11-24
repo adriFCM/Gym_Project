@@ -14,7 +14,8 @@ public class AppMain extends Application {
         // 1) DB + servicios
         SqliteDatabaseManager.initializeDatabase();
         AppConfig.init();
-        seedAdminUserIfMissing();
+        // seedAdminUserIfMissing();
+        seedDefaultUsers();
 
         // 2) Guardamos el stage principal
         SceneManager.setPrimaryStage(stage);
@@ -23,29 +24,24 @@ public class AppMain extends Application {
         SceneManager.switchTo("/views/login.fxml", "Gym Class Booking - Login");
     }
 
-    private void seedAdminUserIfMissing() {
+    private void seedDefaultUsers() {
         UserRepository userRepo = AppConfig.getUserRepository();
 
-        User admin = userRepo.findByUsername("admin");
-        if (admin == null) {
-            String rawPassword = "admin123";
+        seedUserIfMissing(userRepo, "admin",  "admin123",  "ADMIN");
+        seedUserIfMissing(userRepo, "member", "member123", "MEMBER");
+        seedUserIfMissing(userRepo, "trainer","trainer123","TRAINER");
+    }
 
-            // Usa el mismo constructor que en register:
-            // new User(username, password, email, role)
-            User newAdmin = new User(
-                    "admin",
-                    rawPassword,
-                    "admin@gym.com",
-                    "ADMIN"
-            );
+    private void seedUserIfMissing(UserRepository repo,
+                                   String username,
+                                   String rawPassword,
+                                   String role) {
+        User existing = repo.findByUsername(username);
+        if (existing != null) return;
 
-            boolean saved = userRepo.save(newAdmin);
-            if (saved) {
-                System.out.println("Seeded default admin user: admin / admin123");
-            } else {
-                System.err.println("Failed to seed default admin user");
-            }
-        }
+        User u = new User(username, rawPassword, username + "@gym.com", role);
+        boolean ok = repo.save(u);
+        if (ok) System.out.println("Seeded " + role + " user: " + username + " / " + rawPassword);
     }
 
     public static void main(String[] args) {

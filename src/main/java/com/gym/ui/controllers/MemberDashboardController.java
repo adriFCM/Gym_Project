@@ -2,33 +2,62 @@ package com.gym.ui.controllers;
 
 import com.gym.AppConfig;
 import com.gym.domain.User;
+import com.gym.service.AuthService;
 import com.gym.service.BookingService;
-import com.gym.service.ProgressService;
+import com.gym.utils.SceneManager;
 import com.gym.ui.utils.SessionManager;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableView;
 
 public class MemberDashboardController {
 
-    @FXML private Label welcomeLabel;
-    @FXML private TableView<?> classesTable;   // luego definimos columnas
-    @FXML private TableView<?> bookingsTable;  // igual
-    // más nodos: progress bars, etc.
+    @FXML
+    private Label welcomeLabel;
 
+    @FXML
+    private Label nextClassLabel;
+
+    private final AuthService authService = AppConfig.getAuthService();
     private final BookingService bookingService = AppConfig.getBookingService();
-    private final ProgressService progressService = AppConfig.getProgressService();
 
     @FXML
     private void initialize() {
         User current = SessionManager.getCurrentUser();
         if (current != null) {
-            welcomeLabel.setText("Welcome, " + current.getUsername() + "!");
-            // TODO: cargar bookings y progreso
+            welcomeLabel.setText("Welcome, " + current.getUsername());
         } else {
-            welcomeLabel.setText("No active user session");
+            welcomeLabel.setText("Member dashboard");
         }
+
+        // TODO: real "next class" using bookingService
+        nextClassLabel.setText("No upcoming classes (yet)");
     }
 
-    // más métodos: onBookClicked, onCancelBooking, etc.
+    @FXML
+    private void onBookClassClicked() {
+        SceneManager.switchTo("/views/booking.fxml", "Book a class");
+    }
+
+    @FXML
+    private void onMyBookingsClicked() {
+        // For now, just a TODO popup
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("My bookings");
+        alert.setHeaderText(null);
+        alert.setContentText("My bookings screen not implemented yet.");
+        alert.showAndWait();
+    }
+
+    @FXML
+    private void onProgressClicked() {
+        SceneManager.switchTo("/views/progress.fxml", "My progress");
+    }
+
+    @FXML
+    private void onLogoutClicked() {
+        authService.logout();
+        SessionManager.clear();
+        SceneManager.switchTo("/views/login.fxml", "Gym Login");
+    }
 }
