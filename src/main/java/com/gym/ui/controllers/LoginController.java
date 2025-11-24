@@ -3,7 +3,7 @@ package com.gym.ui.controllers;
 import com.gym.AppConfig;
 import com.gym.domain.User;
 import com.gym.service.AuthService;
-import com.gym.ui.utils.SceneManager;
+import com.gym.utils.SceneManager;
 import com.gym.ui.utils.SessionManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

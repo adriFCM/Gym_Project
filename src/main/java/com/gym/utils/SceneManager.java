@@ -1,4 +1,4 @@
-package com.gym.ui.utils;
+package com.gym.utils;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.Label?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.gym.ui.controllers.AdminDashboardController">
+
+    <center>
+        <Label text="Admin dashboard placeholder"
+               style="-fx-font-size: 24px; -fx-padding: 20;" />
+    </center>
+
+</BorderPane>
