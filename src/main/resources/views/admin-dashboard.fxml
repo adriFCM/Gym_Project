@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.gym.ui.controllers.AdminDashboardController">
+
+    <!-- Top bar: title + logout -->
+    <top>
+        <HBox spacing="10" style="-fx-padding: 10;">
+            <Label fx:id="welcomeLabel"
+                   text="Admin dashboard"
+                   style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+            <Pane HBox.hgrow="ALWAYS"/>
+            <Button text="Logout"
+                    onAction="#onLogoutClicked"/>
+        </HBox>
+    </top>
+
+    <!-- Center buttons -->
+    <center>
+        <VBox spacing="15" alignment="CENTER"
+              style="-fx-padding: 40;">
+            <Button text="Manage classes"
+                    prefWidth="200"
+                    onAction="#onManageClassesClicked"/>
+
+            <Button text="Manage schedules"
+                    prefWidth="200"
+                    onAction="#onManageSchedulesClicked"/>
+
+            <Button text="View all bookings"
+                    prefWidth="200"
+                    onAction="#onViewBookingsClicked"/>
+
+            <Button text="View members"
+                    prefWidth="200"
+                    onAction="#onViewMembersClicked"/>
+        </VBox>
+    </center>
+
+</BorderPane>

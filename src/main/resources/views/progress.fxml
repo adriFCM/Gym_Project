@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.gym.ui.controllers.ProgressController">
+
+    <top>
+        <HBox spacing="16" style="-fx-padding: 16;">
+            <Button text="← Back" onAction="#onBackClicked"/>
+            <Label text="Your progress"
+                   style="-fx-font-size: 20; -fx-font-weight: bold;"/>
+        </HBox>
+    </top>
+
+    <center>
+        <TableView fx:id="progressTable" prefHeight="300" prefWidth="500">
+            <columns>
+                <TableColumn fx:id="categoryColumn" text="Category" prefWidth="180"/>
+                <TableColumn fx:id="pointsColumn"   text="Points"   prefWidth="120"/>
+                <TableColumn fx:id="updatedColumn"  text="Last updated" prefWidth="200"/>
+            </columns>
+        </TableView>
+    </center>
+
+    <bottom>
+        <HBox spacing="16" style="-fx-padding: 16;">
+            <Label text="Total points:"/>
+            <Label fx:id="totalPointsLabel" text="0" style="-fx-font-weight: bold;"/>
+            <Label fx:id="messageLabel" textFill="red"/>
+        </HBox>
+    </bottom>
+
+</BorderPane>
