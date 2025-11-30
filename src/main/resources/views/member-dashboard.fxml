@@ -1,49 +1,173 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.paint.Color?>
 
 <BorderPane xmlns="http://javafx.com/javafx/21"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.gym.ui.controllers.MemberDashboardController">
+            fx:controller="com.gym.ui.controllers.MemberDashboardController"
+            styleClass="app-root">
 
-    <!-- Top bar -->
+    <!-- Top bar: title + logout -->
     <top>
-        <HBox spacing="10" style="-fx-padding: 10;">
-            <Label fx:id="welcomeLabel"
-                   text="Member dashboard"
-                   style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
-            <Pane HBox.hgrow="ALWAYS"/>
-            <Button text="Logout"
-                    onAction="#onLogoutClicked"/>
+        <HBox spacing="10"
+              alignment="CENTER_LEFT"
+              style="-fx-padding: 18 24 12 24;">
+            <children>
+                <Label fx:id="welcomeLabel"
+                       text="MEMBER DASHBOARD"
+                       styleClass="screen-title"/>
+
+                <Pane HBox.hgrow="ALWAYS"/>
+
+                <Button text="Logout"
+                        onAction="#onLogoutClicked"
+                        styleClass="secondary-btn"/>
+            </children>
         </HBox>
     </top>
 
-    <!-- Center content -->
+    <!-- Center: hero + next class + action tiles -->
     <center>
-        <VBox spacing="20" alignment="CENTER"
-              style="-fx-padding: 40;">
-            <!-- Next class card -->
-            <VBox spacing="5" style="-fx-padding: 15; -fx-background-color: #f5f5f5; -fx-background-radius: 10;">
-                <Label text="Your next class"
-                       style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
-                <Label fx:id="nextClassLabel"
-                       text="No upcoming classes"
-                       style="-fx-font-size: 14px;"/>
-            </VBox>
+        <VBox alignment="TOP_CENTER"
+              styleClass="screen-container">
+            <children>
 
-            <!-- Actions -->
-            <Button text="Book a class"
-                    prefWidth="220"
-                    onAction="#onBookClassClicked"/>
+                <!-- HERO IMAGE CARD (same banner style as admin) -->
+                <VBox alignment="CENTER"
+                      styleClass="hero-card"
+                      maxWidth="800">
+                    <children>
+                        <StackPane maxWidth="760" maxHeight="230">
+                            <children>
+                                <!-- Background image -->
+                                <ImageView fitWidth="760"
+                                           fitHeight="230"
+                                           preserveRatio="false"
+                                           smooth="true"
+                                           pickOnBounds="true">
+                                    <image>
+                                        <!-- Usa la nueva imagen del miembro -->
+                                        <Image url="@../images/member-hero.jpg" />
+                                    </image>
+                                </ImageView>
 
-            <Button text="My bookings"
-                    prefWidth="220"
-                    onAction="#onMyBookingsClicked"/>
+                                <!-- Dark overlay at ~50% -->
+                                <Rectangle arcWidth="40" arcHeight="40"
+                                           width="760" height="230"
+                                           opacity="0.5">
+                                    <fill>
+                                        <Color fx:constant="BLACK"/>
+                                    </fill>
+                                </Rectangle>
 
-            <Button text="My progress"
-                    prefWidth="220"
-                    onAction="#onProgressClicked"/>
+                                <!-- Text in the middle -->
+                                <VBox alignment="CENTER" spacing="10">
+                                    <children>
+                                        <Label text="Your next class"
+                                               style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+
+                                        <!-- Class info "chip" -->
+                                        <Label fx:id="nextClassLabel"
+                                               text="No upcoming classes (yet)"
+                                               style="
+                                                           -fx-font-size: 14px;
+                                                           -fx-text-fill: white;
+                                                           -fx-background-color: rgba(0,0,0,0.65);
+                                                           -fx-padding: 8 18 8 18;
+                                                           -fx-background-radius: 30;
+                                                       "/>
+                                    </children>
+                                </VBox>
+                            </children>
+                        </StackPane>
+                    </children>
+                </VBox>
+
+                <!-- Section title -->
+                <VBox alignment="CENTER" spacing="4">
+                    <children>
+                        <Label text="Ready for today's workout?"
+                               styleClass="screen-title"/>
+                        <Label text="Be stronger than your excuses."
+                               styleClass="screen-subtitle"/>
+                    </children>
+                </VBox>
+
+                <!-- Action tiles -->
+                <VBox alignment="CENTER"
+                      styleClass="card"
+                      maxWidth="800">
+                    <children>
+                        <GridPane hgap="18" vgap="18">
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="ALWAYS" percentWidth="50"/>
+                                <ColumnConstraints hgrow="ALWAYS" percentWidth="50"/>
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints vgrow="NEVER"/>
+                                <RowConstraints vgrow="NEVER"/>
+                            </rowConstraints>
+
+                            <children>
+
+                                <!-- Book a class (highlighted) -->
+                                <Button GridPane.rowIndex="0" GridPane.columnIndex="0"
+                                        onAction="#onBookClassClicked"
+                                        maxWidth="Infinity"
+                                        styleClass="tile-btn-primary">
+                                    <graphic>
+                                        <HBox alignment="CENTER_LEFT" spacing="8">
+                                            <children>
+                                                <Label text="✔" styleClass="tile-icon"/>
+                                                <Label text="Book a class"/>
+                                            </children>
+                                        </HBox>
+                                    </graphic>
+                                </Button>
+
+                                <!-- My bookings -->
+                                <Button GridPane.rowIndex="0" GridPane.columnIndex="1"
+                                        onAction="#onMyBookingsClicked"
+                                        maxWidth="Infinity"
+                                        styleClass="tile-btn-secondary">
+                                    <graphic>
+                                        <HBox alignment="CENTER_LEFT" spacing="8">
+                                            <children>
+                                                <Label text="📅" styleClass="tile-icon"/>
+                                                <Label text="My bookings"/>
+                                            </children>
+                                        </HBox>
+                                    </graphic>
+                                </Button>
+
+                                <!-- My progress (full-width on second row) -->
+                                <Button GridPane.rowIndex="1" GridPane.columnIndex="0"
+                                        GridPane.columnSpan="2"
+                                        onAction="#onProgressClicked"
+                                        maxWidth="Infinity"
+                                        styleClass="tile-btn-secondary">
+                                    <graphic>
+                                        <HBox alignment="CENTER_LEFT" spacing="8">
+                                            <children>
+                                                <Label text="⭐" styleClass="tile-icon"/>
+                                                <Label text="My progress"/>
+                                            </children>
+                                        </HBox>
+                                    </graphic>
+                                </Button>
+
+                            </children>
+                        </GridPane>
+                    </children>
+                </VBox>
+
+            </children>
         </VBox>
     </center>
+
 </BorderPane>
