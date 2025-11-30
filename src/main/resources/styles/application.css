@@ -1,0 +1,63 @@
+/* ===== GLOBAL ROOT (LOGIN WINDOW) ===== */
+.app-root {
+    -fx-background-color: #000000; /* full black background */
+    -fx-font-family: "Segoe UI", "Roboto", "System", sans-serif;
+}
+
+/* ===== LOGIN CARD ===== */
+.login-card {
+    -fx-background-color: #000000;   /* same as background -> looks like a modal */
+    -fx-padding: 32 36;
+    -fx-spacing: 16;
+}
+
+/* Title: like “Probar Entrenamiento de BIGG / Sign in” */
+.login-title {
+    -fx-font-size: 50px;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-family: "Impact", "Arial Black", "Segoe UI Black", "System";
+    -fx-font-weight: bold;
+}
+
+
+/* ===== INPUTS: dark grey fields ===== */
+.text-field,
+.password-field {
+    -fx-background-color: #1F1F1F;
+    -fx-text-fill: #F5F5F5;
+    -fx-prompt-text-fill: #8A8A8A;
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+    -fx-border-color: #333333;
+    -fx-border-width: 1;
+    -fx-padding: 8 10;
+}
+
+/* ===== PRIMARY BUTTON (neon) ===== */
+.primary-btn {
+    -fx-background-color: #C6FF00;  /* neon BIGG green */
+    -fx-text-fill: #000000;
+    -fx-font-weight: bold;
+    -fx-background-radius: 999;
+    -fx-border-radius: 999;
+    -fx-padding: 10 22;
+    -fx-border-color: transparent;
+}
+
+.primary-btn:hover {
+    -fx-background-color: #D9FF4D;
+}
+
+/* ===== SECONDARY BUTTON (outline, white text) ===== */
+.secondary-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #FFFFFF;
+    -fx-border-color: #555555;
+    -fx-border-radius: 999;
+    -fx-background-radius: 999;
+    -fx-padding: 8 22;
+}
+
+.secondary-btn:hover {
+    -fx-background-color: #1A1A1A;
+}

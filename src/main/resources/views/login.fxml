@@ -7,21 +7,49 @@
       xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.gym.ui.controllers.LoginController"
+      styleClass="app-root"
       style="-fx-padding: 30;">
 
     <children>
-        <Label text="Gym Login" style="-fx-font-size: 20; -fx-font-weight: bold;"/>
+        <!-- Card centrada, con ancho máximo fijo -->
+        <VBox alignment="CENTER"
+              spacing="16"
+              styleClass="login-card"
+              prefWidth="360"
+              maxWidth="360">
+            <children>
 
-        <TextField fx:id="usernameField" promptText="Username" prefWidth="200"/>
-        <PasswordField fx:id="passwordField" promptText="Password" prefWidth="200"/>
+                <!-- Título -->
+                <Label text="GYM LOGIN" styleClass="login-title"/>
 
-        <Label fx:id="errorLabel" textFill="red"/>
+                <!-- Inputs -->
+                <TextField fx:id="usernameField"
+                           promptText="Username"
+                           prefWidth="260"/>
 
-        <!-- LOGIN BUTTON -->
-        <Button text="Login" onAction="#onLoginClicked" defaultButton="true" prefWidth="200"/>
+                <PasswordField fx:id="passwordField"
+                               promptText="Password"
+                               prefWidth="260"/>
 
-        <!-- REGISTER BUTTON -->
-        <Button text="Register" onAction="#onRegisterClicked" prefWidth="200"/>
+                <!-- Error -->
+                <Label fx:id="errorLabel"
+                       textFill="red"/>
+
+                <!-- Botón Login (ancho fijo, no se estira) -->
+                <Button text="Login"
+                        onAction="#onLoginClicked"
+                        defaultButton="true"
+                        prefWidth="260"
+                        styleClass="primary-btn"/>
+
+                <!-- Botón Register (ancho fijo, no se estira) -->
+                <Button text="Register"
+                        onAction="#onRegisterClicked"
+                        prefWidth="260"
+                        styleClass="secondary-btn"/>
+
+            </children>
+        </VBox>
     </children>
 
 </VBox>
