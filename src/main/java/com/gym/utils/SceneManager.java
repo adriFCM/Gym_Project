@@ -11,13 +11,28 @@ public class SceneManager {
 
     public static void setPrimaryStage(Stage stage) {
         primaryStage = stage;
+
+        // Default window size for the whole app
+        primaryStage.setWidth(1100);
+        primaryStage.setHeight(700);
+
+        // Minimum so it doesn’t get too tiny
+        primaryStage.setMinWidth(900);
+        primaryStage.setMinHeight(600);
     }
+
 
     public static void switchTo(String fxmlPath, String title) {
         try {
             FXMLLoader loader = new FXMLLoader(SceneManager.class.getResource(fxmlPath));
             Parent root = loader.load();
             Scene scene = new Scene(root);
+
+            // ⬇️ ADD THIS: load global CSS for every scene
+            scene.getStylesheets().add(
+                    SceneManager.class.getResource("/styles/application.css").toExternalForm()
+            );
+
             primaryStage.setTitle(title);
             primaryStage.setScene(scene);
             primaryStage.show();
@@ -26,5 +41,6 @@ public class SceneManager {
             System.err.println("Could not load view: " + fxmlPath + " - " + e.getMessage());
         }
     }
+
 }
 

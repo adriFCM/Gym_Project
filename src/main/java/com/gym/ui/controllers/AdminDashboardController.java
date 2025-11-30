@@ -19,7 +19,7 @@ public class AdminDashboardController {
     public void initialize() {
         User current = SessionManager.getCurrentUser();
         if (current != null) {
-            welcomeLabel.setText("Admin dashboard - " + current.getUsername());
+            welcomeLabel.setText("ADMIN DASHBOARD - " + current.getUsername());
         }
     }
 

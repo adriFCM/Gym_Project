@@ -2,42 +2,152 @@
 
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+
 
 <BorderPane xmlns="http://javafx.com/javafx/21"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.gym.ui.controllers.AdminDashboardController">
+            fx:controller="com.gym.ui.controllers.AdminDashboardController"
+            styleClass="app-root">
 
     <!-- Top bar: title + logout -->
     <top>
-        <HBox spacing="10" style="-fx-padding: 10;">
-            <Label fx:id="welcomeLabel"
-                   text="Admin dashboard"
-                   style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
-            <Pane HBox.hgrow="ALWAYS"/>
-            <Button text="Logout"
-                    onAction="#onLogoutClicked"/>
+        <HBox spacing="10"
+              alignment="CENTER_LEFT"
+              style="-fx-padding: 18 24 12 24;">
+            <children>
+                <Label fx:id="welcomeLabel"
+                       text="ADMIN DASHBOARD"
+                       styleClass="screen-title"/>
+
+                <Pane HBox.hgrow="ALWAYS"/>
+
+                <Button text="Logout"
+                        onAction="#onLogoutClicked"
+                        styleClass="secondary-btn"/>
+            </children>
         </HBox>
     </top>
 
-    <!-- Center buttons -->
+    <!-- Center: hero + title + tiles -->
     <center>
-        <VBox spacing="15" alignment="CENTER"
-              style="-fx-padding: 40;">
-            <Button text="Manage classes"
-                    prefWidth="200"
-                    onAction="#onManageClassesClicked"/>
+        <VBox alignment="TOP_CENTER"
+              styleClass="screen-container">
+            <children>
 
-            <Button text="Manage schedules"
-                    prefWidth="200"
-                    onAction="#onManageSchedulesClicked"/>
+                <!-- HERO IMAGE CARD -->
+                <VBox alignment="CENTER"
+                      styleClass="hero-card"
+                      maxWidth="800">
+                    <children>
+                        <ImageView fitWidth="760"
+                                   fitHeight="220"
+                                   preserveRatio="true"
+                                   pickOnBounds="true"
+                                   smooth="true">
+                            <image>
+                                <!-- FXML is in /views, image is in /images -->
+                                <Image url="@../images/admin-hero.jpg" />
+                            </image>
+                        </ImageView>
+                    </children>
+                </VBox>
 
-            <Button text="View all bookings"
-                    prefWidth="200"
-                    onAction="#onViewBookingsClicked"/>
 
-            <Button text="Manage users"
-                    prefWidth="200"
-                    onAction="#onViewMembersClicked"/>
+                <!-- Centered question -->
+                <VBox alignment="CENTER" spacing="4">
+                    <children>
+                        <Label text="What do you want to manage?"
+                               styleClass="screen-title"/>
+                        <Label text="Choose a section to configure your gym."
+                               styleClass="screen-subtitle"/>
+                    </children>
+                </VBox>
+
+                <!-- Tiles inside a card -->
+                <VBox alignment="CENTER"
+                      styleClass="card"
+                      maxWidth="800">
+                    <children>
+                        <GridPane hgap="18" vgap="18">
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="ALWAYS" percentWidth="50"/>
+                                <ColumnConstraints hgrow="ALWAYS" percentWidth="50"/>
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints vgrow="NEVER"/>
+                                <RowConstraints vgrow="NEVER"/>
+                            </rowConstraints>
+
+                            <children>
+
+                                <!-- Manage classes (highlighted) -->
+                                <Button GridPane.rowIndex="0" GridPane.columnIndex="0"
+                                        onAction="#onManageClassesClicked"
+                                        maxWidth="Infinity"
+                                        styleClass="tile-btn-primary">
+                                    <graphic>
+                                        <HBox alignment="CENTER_LEFT" spacing="8">
+                                            <children>
+                                                <Label text="☰" styleClass="tile-icon"/>
+                                                <Label text="Manage classes"/>
+                                            </children>
+                                        </HBox>
+                                    </graphic>
+                                </Button>
+
+                                <!-- Manage schedules -->
+                                <Button GridPane.rowIndex="0" GridPane.columnIndex="1"
+                                        onAction="#onManageSchedulesClicked"
+                                        maxWidth="Infinity"
+                                        styleClass="tile-btn-secondary">
+                                    <graphic>
+                                        <HBox alignment="CENTER_LEFT" spacing="8">
+                                            <children>
+                                                <Label text="📅" styleClass="tile-icon"/>
+                                                <Label text="Manage schedules"/>
+                                            </children>
+                                        </HBox>
+                                    </graphic>
+                                </Button>
+
+                                <!-- View all bookings -->
+                                <Button GridPane.rowIndex="1" GridPane.columnIndex="0"
+                                        onAction="#onViewBookingsClicked"
+                                        maxWidth="Infinity"
+                                        styleClass="tile-btn-secondary">
+                                    <graphic>
+                                        <HBox alignment="CENTER_LEFT" spacing="8">
+                                            <children>
+                                                <Label text="✔" styleClass="tile-icon"/>
+                                                <Label text="View all bookings"/>
+                                            </children>
+                                        </HBox>
+                                    </graphic>
+                                </Button>
+
+                                <!-- Manage users -->
+                                <Button GridPane.rowIndex="1" GridPane.columnIndex="1"
+                                        onAction="#onViewMembersClicked"
+                                        maxWidth="Infinity"
+                                        styleClass="tile-btn-secondary">
+                                    <graphic>
+                                        <HBox alignment="CENTER_LEFT" spacing="8">
+                                            <children>
+                                                <Label text="👤" styleClass="tile-icon"/>
+                                                <Label text="Manage users"/>
+                                            </children>
+                                        </HBox>
+                                    </graphic>
+                                </Button>
+
+                            </children>
+                        </GridPane>
+                    </children>
+                </VBox>
+
+            </children>
         </VBox>
     </center>
 
