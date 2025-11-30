@@ -1,17 +1,19 @@
-/* ===== GLOBAL ROOT (LOGIN WINDOW) ===== */
+/* ===== GLOBAL ROOT (ALL SCREENS) ===== */
+
 .app-root {
-    -fx-background-color: #000000; /* full black background */
+    -fx-background-color: #050505; /* very dark, not pure black */
     -fx-font-family: "Segoe UI", "Roboto", "System", sans-serif;
 }
 
-/* ===== LOGIN CARD ===== */
+
+/* ===== LOGIN SCREEN ===== */
+
 .login-card {
-    -fx-background-color: #000000;   /* same as background -> looks like a modal */
+    -fx-background-color: #050505;
     -fx-padding: 32 36;
     -fx-spacing: 16;
 }
 
-/* Title: like “Probar Entrenamiento de BIGG / Sign in” */
 .login-title {
     -fx-font-size: 50px;
     -fx-text-fill: #FFFFFF;
@@ -19,8 +21,7 @@
     -fx-font-weight: bold;
 }
 
-
-/* ===== INPUTS: dark grey fields ===== */
+/* Dark inputs for login (TextField + PasswordField) */
 .text-field,
 .password-field {
     -fx-background-color: #1F1F1F;
@@ -33,9 +34,11 @@
     -fx-padding: 8 10;
 }
 
-/* ===== PRIMARY BUTTON (neon) ===== */
+
+/* ===== GENERIC BUTTONS ===== */
+
 .primary-btn {
-    -fx-background-color: #C6FF00;  /* neon BIGG green */
+    -fx-background-color: #C6FF00;
     -fx-text-fill: #000000;
     -fx-font-weight: bold;
     -fx-background-radius: 999;
@@ -48,7 +51,6 @@
     -fx-background-color: #D9FF4D;
 }
 
-/* ===== SECONDARY BUTTON (outline, white text) ===== */
 .secondary-btn {
     -fx-background-color: transparent;
     -fx-text-fill: #FFFFFF;
@@ -59,5 +61,71 @@
 }
 
 .secondary-btn:hover {
-    -fx-background-color: #1A1A1A;
+    -fx-background-color: #151515;
+}
+
+
+/* ===== GENERIC SCREEN TYPOGRAPHY ===== */
+
+.screen-container {
+    -fx-padding: 32 40;
+    -fx-spacing: 24;
+}
+
+.screen-title {
+    -fx-font-size: 26px;
+    -fx-text-fill: #F2F2F2;
+    -fx-font-family: "Impact", "Arial Black", "Segoe UI Black", "System";
+    -fx-font-weight: bold;
+}
+
+.screen-subtitle {
+    -fx-font-size: 14px;
+    -fx-text-fill: #B5B5B5;
+}
+
+
+/* ===== Cards / hero ===== */
+
+.card {
+    -fx-background-color: #101010;
+    -fx-background-radius: 24;
+    -fx-padding: 20 24;
+    -fx-spacing: 12;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.55), 20, 0.4, 0, 8);
+}
+
+/* Hero card specifically (image on top) */
+.hero-card {
+    -fx-background-color: #101010;
+    -fx-background-radius: 24;
+    -fx-padding: 10 10 14 10;   /* tighter around the picture */
+    -fx-spacing: 0;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.55), 22, 0.45, 0, 10);
+}
+
+
+/* ===== ADMIN DASHBOARD TILES (all neon, icons kept) ===== */
+
+.tile-btn-primary,
+.tile-btn-secondary {
+    -fx-background-color: #C6FF00;
+    -fx-text-fill: #000000;
+    -fx-font-weight: bold;
+    -fx-font-size: 15px;
+    -fx-background-radius: 18;
+    -fx-border-radius: 18;
+    -fx-padding: 16 18;
+    -fx-border-color: transparent;
+}
+
+.tile-btn-primary:hover,
+.tile-btn-secondary:hover {
+    -fx-background-color: #D9FF4D;
+}
+
+/* Icon part inside tile (the little emojis) */
+.tile-icon {
+    -fx-font-size: 18px;
+    -fx-padding: 0 6 0 0;
 }
