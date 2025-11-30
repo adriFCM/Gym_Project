@@ -4,7 +4,6 @@ import com.gym.AppConfig;
 import com.gym.domain.Booking;
 import com.gym.domain.ClassSchedule;
 import com.gym.domain.GymClass;
-import com.gym.domain.User;
 import com.gym.service.BookingService;
 import com.gym.service.ClassService;
 import com.gym.ui.utils.SessionManager;
@@ -13,15 +12,28 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class MyBookingsController {
 
+    private final BookingService bookingService = AppConfig.getBookingService();
+    private final ClassService classService = AppConfig.getClassService();
+
+    private static final DateTimeFormatter DATE_FORMATTER =
+            DateTimeFormatter.ISO_LOCAL_DATE;
+    private static final DateTimeFormatter TIME_FORMATTER =
+            DateTimeFormatter.ofPattern("HH:mm");
+
     @FXML
     private TableView<BookingRow> bookingsTable;
+
     @FXML
     private TableColumn<BookingRow, String> classColumn;
     @FXML
@@ -34,22 +46,16 @@ public class MyBookingsController {
     private TableColumn<BookingRow, Void> actionColumn;
 
     @FXML
+    private ComboBox<String> statusFilter;
+
+    @FXML
     private Label messageLabel;
 
-    private BookingService bookingService;
-    private ClassService classService;
-
-    private final DateTimeFormatter DATE_FORMATTER =
-            DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    private final DateTimeFormatter TIME_FORMATTER =
-            DateTimeFormatter.ofPattern("HH:mm");
+    /** master list before filtering */
+    private List<BookingRow> allRows = new ArrayList<>();
 
     @FXML
     private void initialize() {
-        bookingService = AppConfig.getBookingService();
-        classService = AppConfig.getClassService();
-
-        // Bind columns
         classColumn.setCellValueFactory(c ->
                 new SimpleStringProperty(c.getValue().className()));
         dateColumn.setCellValueFactory(c ->
@@ -59,16 +65,24 @@ public class MyBookingsController {
         statusColumn.setCellValueFactory(c ->
                 new SimpleStringProperty(c.getValue().status()));
 
+        // default sort by date/time
+        bookingsTable.getSortOrder().add(dateColumn);
+
         addCancelButtonColumn();
+
+        // status filter options
+        statusFilter.getItems().addAll("All", "Confirmed", "Cancelled");
+        statusFilter.setValue("All");
+        statusFilter.valueProperty().addListener((obs, oldV, newV) -> applyFilter());
 
         loadBookings();
     }
 
     private void loadBookings() {
-        User current = SessionManager.getCurrentUser();
+        var current = SessionManager.getCurrentUser();
         if (current == null) {
             messageLabel.setText("You must be logged in.");
-            bookingsTable.setItems(FXCollections.observableArrayList());
+            bookingsTable.setItems(FXCollections.emptyObservableList());
             return;
         }
 
@@ -77,44 +91,78 @@ public class MyBookingsController {
 
         for (Booking b : bookings) {
             ClassSchedule schedule = classService.getScheduleById(b.getScheduleId());
-            if (schedule == null) {
-                continue;
-            }
-            GymClass gymClass = classService.getClassById(schedule.getClassId());
-            String className = (gymClass != null)
-                    ? gymClass.getClassName()
-                    : "Class #" + schedule.getClassId();
+            if (schedule == null) continue;
 
-            String date = schedule.getScheduledDate().format(DATE_FORMATTER);
-            String time = schedule.getStartTime().format(TIME_FORMATTER);
+            GymClass gymClass = classService.getClassById(schedule.getClassId());
+            if (gymClass == null) continue;
+
+            String className = gymClass.getClassName();
+            String dateStr = DATE_FORMATTER.format(schedule.getScheduledDate());
+            String timeStr = TIME_FORMATTER.format(schedule.getStartTime());
+            String status = b.getStatus();
+
+            LocalDateTime startDateTime =
+                    LocalDateTime.of(schedule.getScheduledDate(), schedule.getStartTime());
 
             rows.add(new BookingRow(
                     b.getBookingId(),
                     className,
-                    date,
-                    time,
-                    b.getStatus(),
-                    b.isConfirmed()
+                    dateStr,
+                    timeStr,
+                    status,
+                    b.isConfirmed(),
+                    startDateTime
             ));
         }
 
-        bookingsTable.setItems(FXCollections.observableArrayList(rows));
-        messageLabel.setText(rows.isEmpty()
-                ? "You have no bookings yet."
-                : "");
+        // sort by date/time ascending
+        rows.sort(Comparator.comparing(BookingRow::startDateTime));
+
+        this.allRows = rows;
+        applyFilter();
+        messageLabel.setText("");
+    }
+
+    private void applyFilter() {
+        if (allRows == null) {
+            bookingsTable.setItems(FXCollections.emptyObservableList());
+            return;
+        }
+
+        String filter = statusFilter.getValue();
+        List<BookingRow> filtered = allRows;
+
+        if (filter != null && !"All".equalsIgnoreCase(filter)) {
+            String wanted = filter.toUpperCase();
+            filtered = allRows.stream()
+                    .filter(r -> r.status().equalsIgnoreCase(wanted))
+                    .toList();
+        }
+
+        bookingsTable.setItems(FXCollections.observableArrayList(filtered));
+    }
+
+    private boolean canCancel(BookingRow row) {
+        // can cancel up to 2 hours before the class starts
+        LocalDateTime now = LocalDateTime.now();
+        return now.isBefore(row.startDateTime().minusHours(2));
     }
 
     private void addCancelButtonColumn() {
         actionColumn.setCellFactory(col -> new TableCell<>() {
-
             private final Button btn = new Button("Cancel");
 
             {
-                btn.setOnAction(evt -> {
+                btn.setOnAction(e -> {
                     BookingRow row = getTableView().getItems().get(getIndex());
-                    User current = SessionManager.getCurrentUser();
+                    var current = SessionManager.getCurrentUser();
                     if (current == null) {
                         messageLabel.setText("You must be logged in.");
+                        return;
+                    }
+
+                    if (!canCancel(row)) {
+                        messageLabel.setText("You can only cancel up to 2 hours before the class.");
                         return;
                     }
 
@@ -131,13 +179,21 @@ public class MyBookingsController {
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
+
                 if (empty) {
                     setGraphic(null);
-                } else {
-                    BookingRow row = getTableView().getItems().get(getIndex());
-                    // Only allow cancel for confirmed bookings
-                    btn.setDisable(!row.confirmed());
+                    return;
+                }
+
+                BookingRow row = getTableView().getItems().get(getIndex());
+                boolean showButton = row.confirmed() && canCancel(row);
+
+                if (showButton) {
+                    btn.setDisable(false);
                     setGraphic(btn);
+                } else {
+                    // not cancellable (cancelled or too late) → no button
+                    setGraphic(null);
                 }
             }
         });
@@ -155,6 +211,7 @@ public class MyBookingsController {
             String date,
             String time,
             String status,
-            boolean confirmed
+            boolean confirmed,
+            LocalDateTime startDateTime
     ) { }
 }
