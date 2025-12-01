@@ -5,59 +5,77 @@
 
 <BorderPane xmlns="http://javafx.com/javafx/21"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.gym.ui.controllers.AdminUsersController">
+            fx:controller="com.gym.ui.controllers.AdminUsersController"
+            styleClass="admin-root">
 
-    <!-- Top bar -->
+    <!-- TOP: title + back button -->
     <top>
-        <HBox spacing="10" style="-fx-padding: 10;">
+        <HBox spacing="10" alignment="CENTER_LEFT" styleClass="admin-toolbar">
             <Label text="Manage users (members &amp; trainers)"
-                   style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+                   styleClass="admin-title"/>
             <Pane HBox.hgrow="ALWAYS"/>
-            <Button text="Back to dashboard" onAction="#onBackClicked"/>
+            <Button text="Back to dashboard"
+                    onAction="#onBackClicked"
+                    styleClass="back-button"/>
         </HBox>
     </top>
 
-    <!-- Center: table + form -->
+    <!-- CENTER: table + create / delete form -->
     <center>
-        <VBox spacing="10" style="-fx-padding: 10;">
+        <VBox spacing="10" styleClass="admin-center">
 
             <!-- Users table -->
-            <TableView fx:id="usersTable" prefHeight="250" prefWidth="800">
+            <TableView fx:id="usersTable"
+                       prefHeight="250"
+                       prefWidth="800"
+                       styleClass="admin-table">
                 <columns>
                     <TableColumn fx:id="idColumn" text="ID" prefWidth="60"/>
                     <TableColumn fx:id="usernameColumn" text="Username" prefWidth="150"/>
-                    <TableColumn fx:id="emailColumn" text="Email" prefWidth="200"/>
-                    <TableColumn fx:id="roleColumn" text="Role" prefWidth="100"/>
-                    <TableColumn fx:id="createdAtColumn" text="Created at" prefWidth="150"/>
+                    <TableColumn fx:id="emailColumn" text="Email" prefWidth="220"/>
+                    <TableColumn fx:id="roleColumn" text="Role" prefWidth="110"/>
+                    <TableColumn fx:id="createdAtColumn" text="Created at" prefWidth="180"/>
                 </columns>
             </TableView>
 
             <!-- Form -->
-            <TitledPane text="Create member or trainer" expanded="true">
+            <TitledPane text="Create member or trainer"
+                        expanded="true"
+                        styleClass="admin-titled-pane">
                 <content>
-                    <VBox spacing="8" style="-fx-padding: 10;">
-                        <GridPane hgap="10" vgap="8">
+                    <VBox spacing="10" styleClass="admin-form">
+
+                        <GridPane hgap="12" vgap="10">
                             <columnConstraints>
                                 <ColumnConstraints prefWidth="100"/>
-                                <ColumnConstraints prefWidth="250"/>
+                                <ColumnConstraints prefWidth="260"/>
                                 <ColumnConstraints prefWidth="100"/>
-                                <ColumnConstraints prefWidth="250"/>
+                                <ColumnConstraints prefWidth="260"/>
                             </columnConstraints>
 
                             <children>
-                                <Label text="Username:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                                <!-- Row 0 -->
+                                <Label text="Username:" styleClass="admin-label"
+                                       GridPane.rowIndex="0" GridPane.columnIndex="0"/>
                                 <TextField fx:id="usernameField"
+                                           promptText="username"
                                            GridPane.rowIndex="0" GridPane.columnIndex="1"/>
 
-                                <Label text="Password:" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
+                                <Label text="Password:" styleClass="admin-label"
+                                       GridPane.rowIndex="0" GridPane.columnIndex="2"/>
                                 <PasswordField fx:id="passwordField"
+                                               promptText="password"
                                                GridPane.rowIndex="0" GridPane.columnIndex="3"/>
 
-                                <Label text="Email:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                                <!-- Row 1 -->
+                                <Label text="Email:" styleClass="admin-label"
+                                       GridPane.rowIndex="1" GridPane.columnIndex="0"/>
                                 <TextField fx:id="emailField"
+                                           promptText="email@example.com"
                                            GridPane.rowIndex="1" GridPane.columnIndex="1"/>
 
-                                <Label text="Role:" GridPane.rowIndex="1" GridPane.columnIndex="2"/>
+                                <Label text="Role:" styleClass="admin-label"
+                                       GridPane.rowIndex="1" GridPane.columnIndex="2"/>
                                 <ComboBox fx:id="roleComboBox"
                                           promptText="MEMBER or TRAINER"
                                           GridPane.rowIndex="1" GridPane.columnIndex="3"/>
@@ -65,11 +83,18 @@
                         </GridPane>
 
                         <HBox spacing="10">
-                            <Button text="Add user" onAction="#onAddUserClicked"/>
-                            <Button text="Delete selected user" onAction="#onDeleteUserClicked"/>
+                            <Button text="Add user"
+                                    onAction="#onAddUserClicked"
+                                    styleClass="primary-button"/>
+                            <Button text="Delete selected user"
+                                    onAction="#onDeleteUserClicked"
+                                    styleClass="danger-button"/>
                             <Pane HBox.hgrow="ALWAYS"/>
-                            <Button text="Clear form" onAction="#onClearFormClicked"/>
+                            <Button text="Clear form"
+                                    onAction="#onClearFormClicked"
+                                    styleClass="secondary-button"/>
                         </HBox>
+
                     </VBox>
                 </content>
             </TitledPane>
