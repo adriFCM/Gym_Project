@@ -6,7 +6,6 @@ import com.gym.repository.ProgressRepository;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.time.LocalDate;
 
 public class ProgressServiceImpl implements ProgressService {
     private final ProgressRepository progressRepository;
@@ -17,56 +16,41 @@ public class ProgressServiceImpl implements ProgressService {
         this.pointSystem = initializePointSystem();
     }
 
-    private void resetIfNewMonth(FitnessProgress fp) {
-        if (fp.getLastUpdated() == null) return;
-
-        LocalDate last = fp.getLastUpdated();
-        LocalDate now = LocalDate.now();
-
-        if (last.getMonthValue() != now.getMonthValue() ||
-                last.getYear() != now.getYear()) {
-            fp.setPointsThisMonth(0);
-            progressRepository.update(fp);
-        }
-    }
-
-
     private Map<String, Map<String, Integer>> initializePointSystem() {
         Map<String, Map<String, Integer>> system = new HashMap<>();
 
         // HIIT classes
         Map<String, Integer> hiitPoints = new HashMap<>();
-        hiitPoints.put("CARDIO", 20);
-        hiitPoints.put("STRENGTH", 17);
-        hiitPoints.put("ENDURANCE", 14);
-        hiitPoints.put("LEGS", 10);
+        hiitPoints.put("CARDIO", 70);
+        hiitPoints.put("STRENGTH", 60);
+        hiitPoints.put("ENDURANCE", 50);
+        hiitPoints.put("LEGS", 40);
         system.put("HIIT", hiitPoints);
 
         // YOGA classes
         Map<String, Integer> yogaPoints = new HashMap<>();
-        yogaPoints.put("FLEXIBILITY", 15);
-        yogaPoints.put("CORE", 9);
-        yogaPoints.put("STRENGTH", 6);
+        yogaPoints.put("FLEXIBILITY", 50);
+        yogaPoints.put("CORE", 30);
+        yogaPoints.put("STRENGTH", 20);
         system.put("YOGA", yogaPoints);
 
         // STRENGTH classes
         Map<String, Integer> strengthPoints = new HashMap<>();
-        strengthPoints.put("STRENGTH", 20);
-        strengthPoints.put("ARMS", 15);
-        strengthPoints.put("LEGS", 15);
-        strengthPoints.put("CORE", 10);
+        strengthPoints.put("STRENGTH", 80);
+        strengthPoints.put("ARMS", 60);
+        strengthPoints.put("LEGS", 60);
+        strengthPoints.put("CORE", 40);
         system.put("STRENGTH", strengthPoints);
 
         // CARDIO classes
         Map<String, Integer> cardioPoints = new HashMap<>();
-        cardioPoints.put("CARDIO", 20);
-        cardioPoints.put("ENDURANCE", 18);
-        cardioPoints.put("LEGS", 14);
+        cardioPoints.put("CARDIO", 80);
+        cardioPoints.put("ENDURANCE", 70);
+        cardioPoints.put("LEGS", 50);
         system.put("CARDIO", cardioPoints);
 
         return system;
     }
-
 
     @Override
     public void initializeUserProgress(int userId) {
@@ -75,10 +59,9 @@ public class ProgressServiceImpl implements ProgressService {
         for (String category : categories) {
             // Check if progress already exists
             FitnessProgress existing = progressRepository.findByUserIdAndCategory(userId, category);
-            if (existing.getLastUpdated() != null &&
-                    existing.getLastUpdated().getMonthValue() != LocalDate.now().getMonthValue()) {
-                existing.setPointsThisMonth(0);
-                progressRepository.update(existing);
+            if (existing == null) {
+                FitnessProgress progress = new FitnessProgress(userId, category, 0);
+                progressRepository.save(progress);
             }
         }
         System.out.println("Initialized progress for user " + userId);
@@ -114,23 +97,14 @@ public class ProgressServiceImpl implements ProgressService {
 
         return true;
     }
-
     @Override
     public FitnessProgress getUserProgressByCategory(int userId, String category) {
         return progressRepository.findByUserIdAndCategory(userId, category);
     }
-
     @Override
     public List<FitnessProgress> getAllUserProgress(int userId) {
-        List<FitnessProgress> list = progressRepository.findByUserId(userId);
-
-        for (FitnessProgress fp : list) {
-            resetIfNewMonth(fp);
-        }
-
-        return list;
+        return progressRepository.findByUserId(userId);
     }
-
     @Override
     public Map<String, Integer> getPointsForClassType(String classType) {
         return pointSystem.getOrDefault(classType, new HashMap<>());
