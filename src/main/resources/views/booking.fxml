@@ -7,36 +7,55 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.paint.Color?>
 
-<BorderPane xmlns="http://javafx.com/javafx/21"
+<StackPane xmlns="http://javafx.com/javafx/21"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.gym.ui.controllers.BookingController"
             styleClass="app-root"
             prefWidth="1400"
             prefHeight="800">
 
-    <top>
-        <HBox alignment="CENTER_LEFT"
-              style="-fx-padding: 12 20 0 20;">
-            <children>
-                <Button text="← Back"
-                        onAction="#onBackClicked"
-                        styleClass="secondary-btn"/>
-            </children>
-        </HBox>
-    </top>
+    <!-- 1) IMAGEN DE FONDO -->
+    <ImageView fitWidth="1400"
+               fitHeight="800"
+               preserveRatio="false"
+               smooth="true"
+               pickOnBounds="true">
+        <image>
+            <Image url="@../images/member-class.jpg"/>
+        </image>
+    </ImageView>
 
-    <center>
-        <StackPane>
+    <!-- 2) CAPA OSCURA -->
+    <Rectangle width="1400" height="800" opacity="0.78">
+        <fill>
+            <Color fx:constant="BLACK"/>
+        </fill>
+    </Rectangle>
 
-            <ImageView fitWidth="1400"
-                       fitHeight="800"
-                       preserveRatio="false"
-                       smooth="true"
-                       pickOnBounds="true">
-                <image>
-                    <Image url="@../images/member-class.jpg"/>
-                </image>
-            </ImageView>
+    <BorderPane prefWidth="1400" prefHeight="800">
+        <top>
+            <HBox alignment="CENTER_LEFT"
+                  style="-fx-padding: 12 20 0 20;">
+                <children>
+                    <Button text="← Back"
+                            onAction="#onBackClicked"
+                            styleClass="secondary-btn"/>
+                </children>
+            </HBox>
+        </top>
+
+        <center>
+            <VBox alignment="TOP_CENTER">
+                <ImageView fitWidth="1400"
+                           fitHeight="800"
+                           preserveRatio="false"
+                           smooth="true"
+                           pickOnBounds="true">
+                    <image>
+                        <Image url="@../images/member-class.jpg"/>
+                    </image>
+                </ImageView>
+            </VBox>
 
             <Rectangle width="1400" height="800" opacity="0.78">
                 <fill>
@@ -47,8 +66,7 @@
             <VBox maxWidth="900"
                   alignment="TOP_CENTER"
                   spacing="20"
-                  style="-fx-padding: 40 0 0 0;"
-                  StackPane.alignment="CENTER">
+                  style="-fx-padding: 40 16 16 16;">
 
                 <Label text="Book your next class"
                        style="-fx-text-fill: white; -fx-font-size: 32px; -fx-font-weight: bold; -fx-font-family: 'Impact', 'Arial Black';"/>
@@ -78,15 +96,13 @@
                     <TableView fx:id="scheduleTable"
                                styleClass="booking-table"
                                prefWidth="900" prefHeight="320">
-                        <clip>
-                            <Rectangle width="900" height="320" arcWidth="40" arcHeight="40"/>
-                        </clip>
+
                         <columns>
-                            <TableColumn fx:id="timeColumn" text="Time" prefWidth="120"/>
-                            <TableColumn fx:id="classNameColumn" text="Class" prefWidth="160"/>
-                            <TableColumn fx:id="instructorColumn" text="Instructor" prefWidth="160"/>
-                            <TableColumn fx:id="focusColumn" text="Focus" prefWidth="120"/>
-                            <TableColumn fx:id="dateColumn" text="Date" prefWidth="120"/>
+                            <TableColumn fx:id="timeColumn" text="Time" prefWidth="141"/>
+                            <TableColumn fx:id="classNameColumn" text="Class" prefWidth="141"/>
+                            <TableColumn fx:id="instructorColumn" text="Instructor" prefWidth="141"/>
+                            <TableColumn fx:id="focusColumn" text="Focus" prefWidth="141"/>
+                            <TableColumn fx:id="dateColumn" text="Date" prefWidth="141"/>
                             <TableColumn fx:id="spotsColumn" text="Available spots" prefWidth="140"/>
                         </columns>
                         <placeholder>
@@ -108,8 +124,7 @@
                                 style="-fx-font-size: 13px; -fx-padding: 8 24;"/>
                     </children>
                 </HBox>
-
             </VBox>
-        </StackPane>
-    </center>
-</BorderPane>
+        </center>
+    </BorderPane>
+</StackPane>
