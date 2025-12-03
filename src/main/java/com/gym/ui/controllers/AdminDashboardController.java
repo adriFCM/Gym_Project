@@ -40,8 +40,13 @@ public class AdminDashboardController {
 
     @FXML
     private void onViewMembersClicked() {
-        // We will use this to MANAGE users (members + trainers)
+        // MANAGE users (members + trainers)
         SceneManager.switchTo("/views/admin-users.fxml", "Manage users");
+    }
+
+    @FXML
+    private void onViewAnalyticsClicked() {
+        SceneManager.switchTo("/views/admin-analytics.fxml", "Gym analytics");
     }
 
     @FXML

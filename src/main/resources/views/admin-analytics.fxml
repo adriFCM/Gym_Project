@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.gym.ui.controllers.AdminAnalyticsController"
+            styleClass="app-root">
+
+    <!-- Top bar: back + title + logout -->
+    <top>
+        <HBox spacing="10"
+              alignment="CENTER_LEFT"
+              style="-fx-padding: 18 24 12 24;">
+            <children>
+                <Button text="← Back"
+                        onAction="#onBackToDashboardClicked"
+                        styleClass="secondary-btn"/>
+
+                <Label text="Gym analytics"
+                       styleClass="screen-title"/>
+
+                <Pane HBox.hgrow="ALWAYS"/>
+
+                <Button text="Logout"
+                        onAction="#onLogoutClicked"
+                        styleClass="secondary-btn"/>
+            </children>
+        </HBox>
+    </top>
+
+    <!-- Center: charts + tables -->
+    <center>
+        <VBox alignment="TOP_CENTER"
+              spacing="16"
+              styleClass="screen-container">
+            <children>
+
+                <VBox alignment="CENTER_LEFT" maxWidth="900">
+                    <children>
+                        <Label text="Overview of users and bookings in the system."
+                               styleClass="screen-subtitle"/>
+                    </children>
+                </VBox>
+
+                <HBox spacing="20">
+                    <padding>
+                        <Insets top="10" right="24" bottom="24" left="24"/>
+                    </padding>
+                    <children>
+
+                        <!-- LEFT: Bookings by status -->
+                        <VBox spacing="10" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+                            <Label text="Bookings by status"
+                                   styleClass="screen-subtitle"/>
+
+                            <!-- Chart card -->
+                            <StackPane styleClass="card" VBox.vgrow="ALWAYS">
+                                <padding>
+                                    <Insets top="12" right="12" bottom="12" left="12"/>
+                                </padding>
+                                <children>
+                                    <PieChart fx:id="bookingsByStatusChart"
+                                              prefHeight="220"
+                                              legendVisible="true"
+                                              labelsVisible="true"/>
+                                </children>
+                            </StackPane>
+
+                            <!-- Table card -->
+                            <StackPane styleClass="card">
+                                <padding>
+                                    <Insets top="8" right="8" bottom="8" left="8"/>
+                                </padding>
+                                <children>
+                                    <TableView fx:id="statusSummaryTable"
+                                               prefHeight="160">
+                                        <columns>
+                                            <TableColumn fx:id="statusColumn"
+                                                         text="Status"
+                                                         prefWidth="150"/>
+                                            <TableColumn fx:id="statusCountColumn"
+                                                         text="Bookings"
+                                                         prefWidth="120"/>
+                                        </columns>
+                                    </TableView>
+                                </children>
+                            </StackPane>
+                        </VBox>
+
+                        <!-- RIGHT: Bookings by training type -->
+                        <VBox spacing="10" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+                            <Label text="Bookings by training type"
+                                   styleClass="screen-subtitle"/>
+
+                            <!-- Chart card -->
+                            <StackPane styleClass="card" VBox.vgrow="ALWAYS">
+                                <padding>
+                                    <Insets top="12" right="12" bottom="12" left="12"/>
+                                </padding>
+                                <children>
+                                    <BarChart fx:id="bookingsPerClassChart"
+                                              prefHeight="220">
+                                        <xAxis>
+                                            <CategoryAxis label="Type"/>
+                                        </xAxis>
+                                        <yAxis>
+                                            <NumberAxis label="Bookings"/>
+                                        </yAxis>
+                                    </BarChart>
+                                </children>
+                            </StackPane>
+
+                            <!-- Table card -->
+                            <StackPane styleClass="card">
+                                <padding>
+                                    <Insets top="8" right="8" bottom="8" left="8"/>
+                                </padding>
+                                <children>
+                                    <TableView fx:id="classSummaryTable"
+                                               prefHeight="160">
+                                        <columns>
+                                            <TableColumn fx:id="classColumn"
+                                                         text="Type"
+                                                         prefWidth="180"/>
+                                            <TableColumn fx:id="classCountColumn"
+                                                         text="Bookings"
+                                                         prefWidth="120"/>
+                                        </columns>
+                                    </TableView>
+                                </children>
+                            </StackPane>
+                        </VBox>
+
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </center>
+
+</BorderPane>
