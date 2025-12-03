@@ -9,6 +9,7 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class SqliteClassRepository implements ClassRepository {
@@ -229,6 +230,10 @@ public class SqliteClassRepository implements ClassRepository {
         } catch (SQLException e) {
             System.err.println("Error getting all schedules: " + e.getMessage());
         }
+        schedules.sort(Comparator
+                .comparing(ClassSchedule::getScheduledDate)
+                .thenComparing(ClassSchedule::getStartTime));
+
         return schedules;
     }
     @Override

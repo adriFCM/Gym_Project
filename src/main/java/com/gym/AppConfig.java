@@ -50,5 +50,7 @@ public class AppConfig {
     public static UserRepository getUserRepository() { return userRepository; }
     public static BookingRepository getBookingRepository() { return bookingRepository; }
     public static ClassRepository getClassRepository() { return classRepository; }
+    public static ProgressRepository getProgressRepository() {return progressRepository;}
+
 
 }
