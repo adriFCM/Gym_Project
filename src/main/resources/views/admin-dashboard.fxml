@@ -54,7 +54,6 @@
                     </children>
                 </VBox>
 
-
                 <!-- Centered question -->
                 <VBox alignment="CENTER" spacing="4">
                     <children>
@@ -76,6 +75,7 @@
                                 <ColumnConstraints hgrow="ALWAYS" percentWidth="50"/>
                             </columnConstraints>
                             <rowConstraints>
+                                <RowConstraints vgrow="NEVER"/>
                                 <RowConstraints vgrow="NEVER"/>
                                 <RowConstraints vgrow="NEVER"/>
                             </rowConstraints>
@@ -137,6 +137,21 @@
                                             <children>
                                                 <Label text="👤" styleClass="tile-icon"/>
                                                 <Label text="Manage users"/>
+                                            </children>
+                                        </HBox>
+                                    </graphic>
+                                </Button>
+
+                                <!-- Analytics dashboard (5th button) -->
+                                <Button GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.columnSpan="2"
+                                        onAction="#onViewAnalyticsClicked"
+                                        maxWidth="Infinity"
+                                        styleClass="tile-btn-secondary">
+                                    <graphic>
+                                        <HBox alignment="CENTER_LEFT" spacing="8">
+                                            <children>
+                                                <Label text="📊" styleClass="tile-icon"/>
+                                                <Label text="Analytics dashboard"/>
                                             </children>
                                         </HBox>
                                     </graphic>
